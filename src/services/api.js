@@ -1,9 +1,9 @@
 import axios from 'axios'
 
-const api = axios.create({
+const Api = axios.create({
     
 
-    baseUrl: 'https://www.alphavantage.co/query?function=TIME_SERIES_DAILY_ADJUSTED&symbol=IBM&outputsize=full&apikey=EEMGDDQZF11EGT91'
+    baseUrl: 'https://www.alphavantage.co'
 
     
 })
@@ -11,4 +11,4 @@ const api = axios.create({
 
 
 
-export default api;
+export default Api;

@@ -1,60 +1,63 @@
-
-import axios from 'axios';
+import axios from 'axios'
 import { useEffect, useState } from 'react';
 import { Line} from 'react-chartjs-2'
-
+// import Api from '../../services/api'
+import './index.css'
 function ChartApp() {
 
-    useEffect(()=>{ 
-      getStock()
-      // console.log(index,value);
-    },[])
+ 
   
     const [index,setIndex] = useState([]);
     const [value,setValue] = useState([]);
     const [dailyValue,setDailyValue] = useState()
-    const [day,setDay] = useState()
-  
-    const getStock = async ()=>{
-      const api_key ='EEMGDDQZF11EGT91'
-      const stockSymbol = 'IBM'
-      const urlQuery =`https://www.alphavantage.co/query?function=TIME_SERIES_DAILY_ADJUSTED&symbol=${stockSymbol}&apikey=${api_key}`
-      const valueX = []
-      const valueY= []
-  
-  
-      let res = await axios.get(urlQuery)
-      
+    const [optionsState,setOptionsState] = useState('IBM')
+   
+
+    useEffect(()=>{ 
+      const getStock = async ()=>{
+        const api_key ='process.env.REACT_APP_ALPHA_KEY';
+        
+        const urlQuery =`https://www.alphavantage.co/query?function=TIME_SERIES_DAILY_ADJUSTED&symbol=${optionsState}&apikey=${api_key}`
+        const valueX = []
+        const valueY= []
     
-        // console.log(res.data);  
-  
-        for (const key in res.data['Time Series (Daily)']) {
-     
-          valueX.push(key);
-          valueY.push(res.data['Time Series (Daily)'][key]['4. close']);
+    
+        let res = await axios.get(urlQuery)
+        
+      
           
-          // console.log(key);
-          // console.log(res.data['Time Series (Daily)'][key]['4. close']);
+    
+          for (const key in res.data['Time Series (Daily)']) {
+       
+            valueX.push(key);
+            valueY.push(res.data['Time Series (Daily)'][key]['4. close']);
+         
+            
+          }
           
-        }
-        
-        
-        const firstElement = valueY.shift();
-        console.log(firstElement, 'aqui');
-  
-  
-        setDailyValue(firstElement)
-        setIndex(valueX);
-        setValue(valueY)
-  
-        
-  
-    }
+          
+          const firstElement = valueY.shift();
+          console.log(firstElement, 'aqui');
+    
+    
+          setDailyValue(firstElement)
+          setIndex(valueX.reverse());
+          setValue(valueY.reverse())
+    
+          
+    
+      }
+      
+      getStock()
+      // console.log(index,value);
+    },[optionsState])
+    
+    
   
     const [chartData,setChartData] = useState({})
     
-    const chart = () =>{
-      setChartData({
+    const chart = async() =>{
+       await setChartData({
           labels:index,
         
           datasets:[
@@ -93,30 +96,80 @@ function ChartApp() {
   
     },[index,value])
   
-    
+    const handleChange = (event) => {
+      setOptionsState(event.target.value);
+    };
     return (
-      <>
-  
-         <div className="container">
-            <h1 style={{textAlign:'center',alignContent:'center',alignItems:'center'}}>Historico</h1>
+        <div className="main">
+        
+                    <div className="card">
+                      <div className="container">
+                          <h1 >Histórico</h1>
 
-                <div className="chart" style={{width:'800px',height:'350px'}}>
-                  
-                  <Line 
-                  data={chartData}
-              
-                />
-                </div>
-                <br/>
-                <br/>
-                <br/>
-                <br/>
-            <h2> Valor de hoje: {dailyValue}</h2>
+                        <div className="selection">
+                          <h2>Preço de: {optionsState} </h2>
+                              <select 
+                              onChange={handleChange}
+                              value={optionsState}>
+                                {/* <option selected Value="0">Selecione a Ação:</option> */}
+                                <option value="IBM">IBM</option>
+                                <option value="FB">FACEBOOK</option>
+                                <option value="WORK">SLACK TECNOLOGIES</option>
+                                <option value="TSLA">TESLA</option>
+                              </select>
+                        </div>
 
-        </div>
-    </>
-   
-    );
+
+                              <div className="chart" >
+                                
+                                <Line  data={chartData}/>
+                              </div>
+                        
+                      </div>
+                    </div>  
+                      
+                  <div className="projection">
+                    <div className="compare">
+                          <h1>Projeções</h1>
+                          <h2> Valor de hoje: {dailyValue}</h2>
+
+                        <div className="selectionBox">
+                            <div className="selection">
+                              <h2>Valor de : {optionsState} </h2>
+                                  <select 
+                                  onChange={handleChange}
+                                  value={optionsState}>
+                                    {/* <option selected Value="0">Selecione a Ação:</option> */}
+                                    <option value="IBM">IBM</option>
+                                    <option value="FB">FACEBOOK</option>
+                                    <option value="WORK">SLACK TECNOLOGIES</option>
+                                    <option value="TSLA">TESLA</option>
+                                  </select>
+                            </div>
+
+
+                            <div className="selection">
+                              <h2>Valor de : {optionsState} </h2>
+                                  <select 
+                                  onChange={handleChange}
+                                  value={optionsState}>
+                                    {/* <option selected Value="0">Selecione a Ação:</option> */}
+                                    <option value="IBM">IBM</option>
+                                    <option value="FB">FACEBOOK</option>
+                                    <option value="WORK">SLACK TECNOLOGIES</option>
+                                    <option value="TSLA">TESLA</option>
+                                  </select>
+                            </div>
+
+                        </div>
+
+                     </div>
+            </div>
+        
+        </div>      
+
+        
+    )
   }
 
 
