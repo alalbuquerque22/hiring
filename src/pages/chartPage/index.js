@@ -11,6 +11,7 @@ function ChartApp() {
     const [value,setValue] = useState([]);
     const [dailyValue,setDailyValue] = useState()
     const [optionsState,setOptionsState] = useState('IBM')
+    
    
 
     useEffect(()=>{ 
@@ -31,14 +32,14 @@ function ChartApp() {
        
             valueX.push(key);
             valueY.push(res.data['Time Series (Daily)'][key]['4. close']);
-         
+           
             
           }
           
           
           const firstElement = valueY.shift();
-          console.log(firstElement, 'aqui');
-    
+        
+           
     
           setDailyValue(firstElement)
           setIndex(valueX.reverse());
@@ -49,10 +50,57 @@ function ChartApp() {
       }
       
       getStock()
+
+    
       // console.log(index,value);
     },[optionsState])
     
+
+
+    const [secondIndex,setSecondIndex] = useState([]);
+    const [secondValue,setSecondValue] = useState([]);
+    const [secondDailyValue,setSecondDailyValue] = useState()
+    const [secondOptionsState,setSecondOptionsState] = useState('IBM')
+   
+
+    useEffect(()=>{ 
+      const getComparation = async ()=>{
+        const api_key ='process.env.REACT_APP_ALPHA_KEY';
+        
+        const urlQuery =`https://www.alphavantage.co/query?function=TIME_SERIES_DAILY_ADJUSTED&symbol=${secondOptionsState}&apikey=${api_key}`
+        const valueX = []
+        const valueY= []
     
+    
+        let res = await axios.get(urlQuery)
+        
+      
+          
+    
+          for (const key in res.data['Time Series (Daily)']) {
+       
+            valueX.push(key);
+            valueY.push(res.data['Time Series (Daily)'][key]['4. close']);
+         
+            
+          }
+          
+          
+          const firstElement = valueY.shift();
+        
+    
+    
+          setSecondDailyValue(firstElement)
+          setSecondIndex(valueX.reverse());
+          setSecondValue(valueY.reverse())
+    
+          
+    
+      }
+      
+      getComparation()
+      // console.log(index,value);
+    },[secondOptionsState])
   
     const [chartData,setChartData] = useState({})
     
@@ -99,6 +147,41 @@ function ChartApp() {
     const handleChange = (event) => {
       setOptionsState(event.target.value);
     };
+
+    const handleSecondChange = (event) => {
+      setSecondOptionsState(event.target.value);
+    };
+
+    function handleTimestamp (){
+
+        const linhas = index.map(()=>{
+          return(
+        
+            
+            <tr>
+                <td>{index}</td>
+                <td>U$ {value}</td>
+                <td>U$ {secondValue}</td>
+                <td>{ ((value / secondValue -1 )* 100).toFixed(2)}%</td>
+            </tr>
+            
+
+          )
+
+      })
+          
+      
+      
+
+    }
+  
+
+
+
+   
+
+  
+     
     return (
         <div className="main">
         
@@ -107,7 +190,7 @@ function ChartApp() {
                           <h1 >Histórico</h1>
 
                         <div className="selection">
-                          <h2>Preço de: {optionsState} </h2>
+                          <h2>Histórico da equity: {optionsState} </h2>
                               <select 
                               onChange={handleChange}
                               value={optionsState}>
@@ -131,11 +214,12 @@ function ChartApp() {
                   <div className="projection">
                     <div className="compare">
                           <h1>Projeções</h1>
-                          <h2> Valor de hoje: {dailyValue}</h2>
+                          
 
                         <div className="selectionBox">
                             <div className="selection">
-                              <h2>Valor de : {optionsState} </h2>
+                              <h2>Equity de : {optionsState} </h2>
+                              <h2> Valor de hoje: U$ {dailyValue}</h2>
                                   <select 
                                   onChange={handleChange}
                                   value={optionsState}>
@@ -149,10 +233,12 @@ function ChartApp() {
 
 
                             <div className="selection">
-                              <h2>Valor de : {optionsState} </h2>
+                              <h2>Equity de : {secondOptionsState} </h2>
+                              <h2> Valor de hoje: U$ {secondDailyValue}</h2>
+
                                   <select 
-                                  onChange={handleChange}
-                                  value={optionsState}>
+                                  onChange={handleSecondChange}
+                                  value={secondOptionsState}>
                                     {/* <option selected Value="0">Selecione a Ação:</option> */}
                                     <option value="IBM">IBM</option>
                                     <option value="FB">FACEBOOK</option>
@@ -163,8 +249,30 @@ function ChartApp() {
 
                         </div>
 
+                      <h2>Diferança entre preço da Ação {optionsState} e {secondOptionsState} é de U$ {dailyValue - secondDailyValue}</h2>
+                      <h2>  A Variação de porcentagem é: { ((dailyValue / secondDailyValue -1 )* 100).toFixed(2)}%</h2> Formula : (({dailyValue} / {secondDailyValue}) -1) *100 
+
+
+                        <div className="tabela">
+                        <table style={{  border: "1px solid black"}}>
+                            <tr>
+                                <th>&nbsp;</th>
+                                <th>{optionsState}</th>
+                                <th>{secondOptionsState}</th>
+                                <th>Variação de porcentagem</th>
+                            </tr>
+                            <tr>
+                                <td>{index.shift()}</td>
+                                <td>U$ {dailyValue}</td>
+                                <td>U$ {secondDailyValue}</td>
+                                <td> { ((dailyValue / secondDailyValue -1 )* 100).toFixed(2)}%</td>
+                            </tr>
+                           
+                        </table>
+                        </div>
+
                      </div>
-            </div>
+                  </div>
         
         </div>      
 

@@ -2,7 +2,7 @@
 import ChartApp from './pages/chartPage/index'
 
 
-
+import './styles/Global.css'
 
 
 
