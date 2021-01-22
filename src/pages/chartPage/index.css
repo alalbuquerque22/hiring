@@ -107,7 +107,7 @@ th {
   justify-content: center;
   border: 0px solid rgb(105, 105, 105);
 
-  border-radius: 8px;
+  /* border-radius: 8px; */
   padding: 15px;
   text-align: center;
 }
