@@ -4,7 +4,7 @@
   transition: 0.3s;
   border-radius: 5px;
   margin: 5% 10% auto;
-  background-color: "#f1f1f1";
+  background: #f1f1f1;
 }
 
 /* On mouse-over, add a deeper shadow */
@@ -20,6 +20,7 @@
 }
 
 .container h1 {
+  width: 100%;
   text-align: center;
   align-content: center;
   align-items: center;
@@ -28,8 +29,9 @@
 .chart {
   align-content: center;
   align-items: center;
-  max-width: 800px;
-  max-height: 350px;
+  width: 100%;
+  /* max-width: 800px; */
+
   margin-bottom: 5%;
 }
 .projection {
@@ -37,6 +39,8 @@
   transition: 0.3s;
   border-radius: 5px;
   margin: 0 10% auto;
+
+  background: #f1f1f1;
 }
 .projection:hover {
   box-shadow: 0 8px 16px 0 rgba(0, 0, 0, 0.2);
@@ -48,12 +52,96 @@
 .compare h1 {
   text-align: center;
   align-items: center;
-  font-size: 1rem;
+  font-size: 40px;
+  padding-top: 30px;
+  padding-bottom: 30px;
 }
 .compare h2 {
   font-size: 0.8rem;
 }
+.text {
+  text-align: left;
+  padding: 2% 2%;
+  align-items: center;
+  justify-content: center;
+  border-radius: 8px;
+  background-color: #c9c9c9;
+}
+.text h2 {
+  font-size: 16px;
+}
+.selectionBox {
+  display: grid;
+  grid-gap: 10px;
+  width: 100%;
+  grid-template-columns: 50% 2fr;
+  padding-bottom: 20px;
+}
+.selectionBox h2 {
+  font-size: 30px;
+}
+.selectionBoxItem {
+  padding-top: 20px;
+  justify-content: center;
+  align-items: center;
+  flex: auto;
+  text-align: center;
+}
 .selection {
-  /* flex-direction: row; */
-  flex-flow: row nowrap;
+}
+.selection select {
+  /* display: none; */
+}
+
+.tabela {
+  display: grid;
+  grid-template-columns: 50% 2fr;
+  /* max-height: 800px; */
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+.tabela table,
+td,
+th {
+  align-items: center;
+  justify-content: center;
+  border: 0px solid rgb(105, 105, 105);
+
+  border-radius: 8px;
+  padding: 15px;
+  text-align: center;
+}
+.tabela th {
+  background-color: rgb(1, 23, 150, 0.8);
+  color: white;
+}
+.tabela tr:nth-child(even) {
+  background-color: #c9c9c9;
+}
+.tabela tr:hover {
+  background-color: #ddd;
+}
+.tabela table {
+  width: 100%;
+  border-collapse: collapse;
+  max-height: 800px;
+  overflow: scroll;
+  
+}
+.tabela table + table{
+width: 100%;
+}
+
+
+* select {
+  background-color: rgb(1, 23, 150, 0.8);
+
+  color: #ffffff;
+  padding: 8px 18px;
+  border: none !important;
+  border-radius: 8px;
+
+  border-color: none;
+  cursor: pointer;
+  user-select: none;
 }

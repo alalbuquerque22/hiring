@@ -11,7 +11,7 @@ body,
 }
 
 body {
-  background: #f1f1f1;
+  background: #666666;
 }
 
 /* #root {
@@ -22,13 +22,13 @@ body {
 
 body {
   font: 500 1.6rem Poppins;
-  color: #6a6180;
+  color: #311e63;
 }
 
-.container {
+/* .container {
   width: 90vw;
-  max-width: 700px;
-}
+  max-width: 1024px;
+} */
 
 @media (min-width: 700px) {
   :root {
